@@ -4,3 +4,4 @@ installer/output/
 *.user
 .vs/
 .openclaude/
+__pycache__/
