@@ -6,6 +6,11 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version override, semver without "v" (optional)'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -17,6 +22,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $v = $env:GITHUB_REF_NAME -replace '^v', ''
+          } elseif ($env:INPUT_VERSION) {
+            $v = $env:INPUT_VERSION
+          } else {
+            $v = '0.0.0'
+          }
+          "version=$v" >> $env:GITHUB_OUTPUT
+          "is_tag=$($env:GITHUB_REF_TYPE -eq 'tag')" >> $env:GITHUB_OUTPUT
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -26,25 +45,28 @@ jobs:
         run: |
           dotnet publish src/Ping -c Release -r win-x64 --self-contained `
             -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
-            -p:Version="${{ github.ref_type == 'tag' && github.ref_name || '1.0.0' }}"
+            -p:Version="${{ steps.version.outputs.version }}"
 
-      - name: Rename exe
+      - name: Package exe
         shell: pwsh
         run: |
+          $v = "${{ steps.version.outputs.version }}"
           $dir = 'src/Ping/bin/Release/net8.0-windows/win-x64/publish'
-          $tag = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME } else { 'dev' }
-          Rename-Item "$dir/Ping.exe" "Ping-$tag.exe"
-          Compress-Archive -Path "$dir/Ping-$tag.exe" -DestinationPath "Ping-$tag.zip"
+          $out = Join-Path $env:RUNNER_TEMP 'out'
+          New-Item -ItemType Directory -Path $out -Force | Out-Null
+          Copy-Item "$dir/Ping.exe" "$out/Ping-$v.exe"
+          Compress-Archive -Path "$out/Ping-$v.exe" -DestinationPath "$out/Ping-$v.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ping-win-x64
-          path: Ping-*.zip
+          path: ${{ runner.temp }}/out/Ping-*.zip
 
-      - name: Draft release (tags only)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Create GitHub Release (tags only)
+        if: steps.version.outputs.is_tag == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          files: Ping-*.zip
+          files: ${{ runner.temp }}/out/Ping-*.zip
+          name: Ping ${{ steps.version.outputs.version }}
           generate_release_notes: true
