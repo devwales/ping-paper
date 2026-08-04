@@ -9,6 +9,10 @@ Built by devs who get overwhelmed by giant to-do lists — and who side-quest
 instead of doing the thing. Ping shows one task at a time, on your desk, not on
 your screen.
 
+## Promo
+
+<video src="promo/Ping-promo.mp4" controls></video>
+
 ## What it does
 
 - **The bubble** sits on your desktop. Drag it anywhere; it remembers where.
