@@ -1,0 +1,134 @@
+<Window x:Class="Ping.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ping settings" Width="470" SizeToContent="Height" MaxHeight="660"
+        ResizeMode="NoResize" Background="{StaticResource PaperBrush}"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20,16,20,20">
+
+            <TextBlock Text="Settings" FontSize="18" FontWeight="SemiBold"
+                       Foreground="{StaticResource InkBrush}" Margin="2,0,0,14"/>
+
+            <!-- Printer -->
+            <TextBlock Text="Printer" Style="{StaticResource SectionLabel}"/>
+            <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="14">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="SpoolerRadio" Content="Windows printer (USB)" IsChecked="True"
+                                     FontSize="13" Foreground="{StaticResource InkBrush}" Margin="0,0,14,0"/>
+                        <RadioButton x:Name="NetworkRadio" Content="Ethernet" FontSize="13"
+                                     Foreground="{StaticResource InkBrush}" Margin="0,0,14,0"/>
+                        <RadioButton x:Name="FileRadio" Content="Files (testing)" FontSize="13"
+                                     Foreground="{StaticResource InkBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="SpoolerPanel" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="PrinterCombo" IsEditable="True" FontSize="13"
+                                      Padding="8,6" VerticalContentAlignment="Center"/>
+                            <Button x:Name="RefreshButton" Grid.Column="1" Style="{StaticResource GhostButton}"
+                                    Content="Refresh" FontSize="12" Margin="6,0,0,0"/>
+                        </Grid>
+                        <TextBlock Text="Pick your thermal printer, or type its Windows queue name."
+                                   FontSize="11" Foreground="{StaticResource MutedBrush}"
+                                   TextWrapping="Wrap" Margin="2,6,0,0"/>
+                    </StackPanel>
+
+                    <Grid x:Name="NetworkPanel" Visibility="Collapsed" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="86"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="HostBox" Style="{StaticResource CalmTextBox}"
+                                 Tag="Printer address, e.g. 192.168.1.50" FontSize="13"/>
+                        <TextBox x:Name="PortBox" Grid.Column="1" Style="{StaticResource CalmTextBox}"
+                                 Tag="9100" FontSize="13" Margin="6,0,0,0"/>
+                    </Grid>
+
+                    <TextBlock x:Name="FileNote" Visibility="Collapsed" Margin="0,10,0,0"
+                               FontSize="11" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"
+                               Text="Receipts are saved as text files in %LocalAppData%\Ping\receipts - handy for trying Ping without a printer."/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <TextBlock Text="Paper width" FontSize="12" Foreground="{StaticResource MutedBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        <RadioButton x:Name="Width80" Content="80 mm" IsChecked="True" FontSize="13"
+                                     Foreground="{StaticResource InkBrush}" Margin="0,0,12,0"/>
+                        <RadioButton x:Name="Width58" Content="58 mm" FontSize="13"
+                                     Foreground="{StaticResource InkBrush}"/>
+                    </StackPanel>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="TestButton" Style="{StaticResource GhostButton}"
+                                Content="Test print" FontSize="12"/>
+                        <TextBlock x:Name="PrinterStatus" Grid.Column="1" FontSize="11"
+                                   Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Working hours -->
+            <TextBlock Text="Working hours" Style="{StaticResource SectionLabel}" Margin="0,16,0,8"/>
+            <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="14">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="From" FontSize="12" Foreground="{StaticResource MutedBrush}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="StartCombo" Width="86" FontSize="13" Padding="8,5"/>
+                    <TextBlock Text="to" FontSize="12" Foreground="{StaticResource MutedBrush}"
+                               VerticalAlignment="Center" Margin="10,0"/>
+                    <ComboBox x:Name="EndCombo" Width="86" FontSize="13" Padding="8,5"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Bubble -->
+            <TextBlock Text="Bubble" Style="{StaticResource SectionLabel}" Margin="0,16,0,8"/>
+            <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="14">
+                <StackPanel>
+                    <TextBlock Text="Size" FontSize="11" Foreground="{StaticResource MutedBrush}"/>
+                    <Slider x:Name="SizeSlider" Minimum="48" Maximum="72" TickFrequency="4"
+                            IsSnapToTickEnabled="True" Margin="0,0,0,8"/>
+                    <TextBlock Text="Opacity" FontSize="11" Foreground="{StaticResource MutedBrush}"/>
+                    <Slider x:Name="OpacitySlider" Minimum="0.7" Maximum="1.0" TickFrequency="0.05"
+                            IsSnapToTickEnabled="True" Margin="0,0,0,8"/>
+                    <CheckBox x:Name="AlwaysTopBox" Content="Always on top" FontSize="13"
+                              Foreground="{StaticResource InkBrush}" Margin="0,2,0,4"/>
+                    <CheckBox x:Name="ShowOnStartBox" Content="Show bubble when Ping starts" FontSize="13"
+                              Foreground="{StaticResource InkBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- System -->
+            <TextBlock Text="System" Style="{StaticResource SectionLabel}" Margin="0,16,0,8"/>
+            <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="14">
+                <StackPanel>
+                    <CheckBox x:Name="AutoStartBox" Content="Start Ping with Windows" FontSize="13"
+                              Foreground="{StaticResource InkBrush}" Margin="0,2,0,4"/>
+                    <CheckBox x:Name="CatchUpBox"
+                              Content="Print missed tasks when Ping starts or the PC wakes"
+                              FontSize="13" Foreground="{StaticResource InkBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CancelButton" Style="{StaticResource GhostButton}" Content="Cancel"/>
+                <Button x:Name="SaveButton" Grid.Column="1" Style="{StaticResource CalmButton}"
+                        Content="Save" Margin="8,0,0,0"/>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

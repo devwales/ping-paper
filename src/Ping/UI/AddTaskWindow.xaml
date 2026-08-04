@@ -1,0 +1,38 @@
+<Window x:Class="Ping.UI.AddTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" Topmost="True" Width="348" SizeToContent="Height"
+        WindowStartupLocation="Manual">
+    <Border Background="{StaticResource PaperBrush}" CornerRadius="16"
+            Effect="{StaticResource SoftShadow}" Padding="18" Margin="6">
+        <StackPanel>
+            <TextBlock Text="Add task" FontSize="16" FontWeight="SemiBold"
+                       Foreground="{StaticResource InkBrush}" Margin="2,0,0,12"/>
+
+            <TextBox x:Name="TaskBox" Style="{StaticResource CalmTextBox}"
+                     Tag="What needs doing?" MaxLength="200"/>
+
+            <TextBlock Text="Day" Style="{StaticResource SectionLabel}" Margin="2,14,0,6"/>
+            <WrapPanel x:Name="DayPanel"/>
+
+            <TextBlock Text="Time" Style="{StaticResource SectionLabel}" Margin="2,14,0,6"/>
+            <ScrollViewer MaxHeight="148" VerticalScrollBarVisibility="Auto" Padding="0,0,2,0">
+                <WrapPanel x:Name="TimePanel"/>
+            </ScrollViewer>
+
+            <TextBlock x:Name="MessageNote" Foreground="{StaticResource NoteBrush}"
+                       FontSize="12" TextWrapping="Wrap" Margin="2,10,2,0"/>
+
+            <Grid Margin="0,14,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CancelButton" Style="{StaticResource GhostButton}" Content="Cancel"/>
+                <Button x:Name="SaveButton" Style="{StaticResource CalmButton}" Grid.Column="1"
+                        Content="Save &amp; schedule" Margin="8,0,0,0"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>

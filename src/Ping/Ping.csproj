@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Ping</AssemblyName>
+    <RootNamespace>Ping</RootNamespace>
+    <Product>Ping</Product>
+    <Description>Ping - quiet timed task reminders, printed on paper.</Description>
+    <Version>1.0.0</Version>
+    <ApplicationIcon>..\..\assets\ping.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Do NOT set InvariantGlobalization: WPF needs real cultures (caret/input language,
+         XmlLanguage.GetSpecificCulture for bindings) and crashes without them.
+         Pinned explicitly - a stale publish with it on crashed on ComboBox focus
+         and ContextMenu open. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!-- WFAC010 is spurious for WPF: manifest DPI awareness is the correct mechanism here. -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="..\..\assets\ping.ico">
+      <Link>ping.ico</Link>
+    </Resource>
+  </ItemGroup>
+
+</Project>
