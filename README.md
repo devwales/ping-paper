@@ -11,7 +11,9 @@ your screen.
 
 ## Promo
 
-<video src="promo/Ping-promo.mp4" controls></video>
+![Ping demo](promo/ping-promo.gif)
+
+Watch the full video: [Ping-promo.mp4](promo/Ping-promo.mp4)
 
 ## What it does
 
